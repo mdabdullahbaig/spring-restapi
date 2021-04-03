@@ -2,6 +2,7 @@ package com.spring.restapi.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.restapi.entities.User;
 import com.spring.restapi.service.UserService;
+import com.spring.restapi.ui.request.UserRequest;
+import com.spring.restapi.ui.response.UserResponse;
+import com.spring.restapi.ui.shared.dto.UserDto;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,55 +28,64 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping
-	public ResponseEntity<List<User>> getAllUser() {
-		List<User> userList = this.userService.getAllUser();
-
-		if (userList.size() <= 0)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(userList, HttpStatus.OK);
-	}
-
-	@GetMapping("/{userId}")
-	public ResponseEntity<User> getUserById(@PathVariable String userId) {
-		
-		User user = this.userService.getUserById(Long.parseLong(userId));
-		
-		if(user == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
-		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
+//	@GetMapping
+//	public ResponseEntity<List<UserRequest>> getAllUser() {
+//		List<UserRequest> userList = this.userService.getAllUser();
+//
+//		if (userList.size() <= 0)
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		return new ResponseEntity<>(userList, HttpStatus.OK);
+//	}
+//
+//	@GetMapping("/{userId}")
+//	public ResponseEntity<UserRequest> getUserById(@PathVariable String userId) {
+//		
+//		UserRequest user = this.userService.getUserById(Long.parseLong(userId));
+//		
+//		if(user == null)
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		
+//		return new ResponseEntity<>(user, HttpStatus.OK);
+//	}
 
 	@PostMapping
-	public ResponseEntity<User> createUser(@RequestBody User newUser) {
-		User user = this.userService.createUser(newUser);
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
+	public UserResponse createUser(@RequestBody UserRequest addUser) {
+		
+		UserResponse userRes = new UserResponse();
+		UserDto userDto = new UserDto();
+		
+		BeanUtils.copyProperties(addUser, userDto);
+		
+		UserDto createdUser = userService.createUser(userDto);
+		
+		BeanUtils.copyProperties(createdUser, userRes);
+		
+		return userRes;
 				
 	}
 
-	@PutMapping("/{userId}")
-	public ResponseEntity<User> updateUserById(@RequestBody User updatedUser, @PathVariable String userId) {
-		User user = this.userService.updateUserById(updatedUser, Long.parseLong(userId));
-		
-		if(user == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
-
-	@DeleteMapping("/{userId}")
-	public ResponseEntity<User> deletedUserById(@PathVariable String userId) {
-		
-		
-		try {
-			User user = this.userService.deletedUserById(Long.parseLong(userId));
-			if(user == null)
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		
-	}
+//	@PutMapping("/{userId}")
+//	public ResponseEntity<UserRequest> updateUserById(@RequestBody UserRequest updatedUser, @PathVariable String userId) {
+//		UserRequest user = this.userService.updateUserById(updatedUser, Long.parseLong(userId));
+//		
+//		if(user == null)
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		return new ResponseEntity<>(user, HttpStatus.OK);
+//	}
+//
+//	@DeleteMapping("/{userId}")
+//	public ResponseEntity<UserRequest> deletedUserById(@PathVariable String userId) {
+//		
+//		
+//		try {
+//			UserRequest user = this.userService.deletedUserById(Long.parseLong(userId));
+//			if(user == null)
+//				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//		} catch(Exception e) {
+//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		
+//		
+//	}
 }

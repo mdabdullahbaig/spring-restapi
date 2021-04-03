@@ -7,35 +7,41 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "users")
+@Entity(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
+public class UserEntity implements Serializable {
 
-	private static final long serialVersionUID = 9180967790974683888L;
+	private static final long serialVersionUID = -7991169103144887313L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	
+	@Column(nullable = false)
+	private String userId;
 
-	@Column(name = "first_name", nullable = false, length = 30)
+	@Column(nullable = false, length = 30)
 	private String firstName;
 
-	@Column(name = "last_name", nullable = false, length = 30)
+	@Column(nullable = false, length = 30)
 	private String lastName;
 
-	@Column(name = "email", nullable = false, length = 40)
+	@Column(nullable = false, length = 40, unique = true)
 	private String email;
 
-	@Column(name = "password", nullable = false, length = 30)
-	private String password;
+	@Column(nullable = false)
+	private String hashPassword;
+
+	private String emailVerificationToken;
+
+	@Column(nullable = false)
+	private Boolean emailVerificationStatus = false;
 
 }

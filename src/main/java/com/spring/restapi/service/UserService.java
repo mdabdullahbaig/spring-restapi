@@ -2,17 +2,18 @@ package com.spring.restapi.service;
 
 import java.util.List;
 
-import com.spring.restapi.entities.User;
+import com.spring.restapi.ui.request.UserRequest;
+import com.spring.restapi.ui.shared.dto.UserDto;
 
 public interface UserService {
-	public List<User> getAllUser();
+//	public List<UserRequest> getAllUser();
+//
+//	public UserRequest getUserById(long userId);
 
-	public User getUserById(long userId);
+	UserDto createUser(UserDto addUser);
 
-	public User createUser(User newUser);
-
-	public User updateUserById(User updatedUser, long userId);
-
-	public User deletedUserById(long userId);
+//	public UserRequest updateUserById(UserRequest updatedUser, long userId);
+//
+//	public UserRequest deletedUserById(long userId);
 
 }
