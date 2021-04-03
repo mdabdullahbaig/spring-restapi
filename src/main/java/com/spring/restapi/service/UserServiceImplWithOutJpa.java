@@ -15,9 +15,9 @@ public class UserServiceImplWithOutJpa implements UserServiceWithOutJpa {
 	public UserServiceImplWithOutJpa() {
 
 		userList = new ArrayList<>();
-		userList.add(new User(1, "Md Abdullah", "Baig"));
-		userList.add(new User(2, "Md Arshad", "Baig"));
-		userList.add(new User(3, "Md Tahir", "Baig"));
+		userList.add(new User(1, "Md Abdullah", "Baig", "abdullah@gmail.com", "abdul123"));
+		userList.add(new User(2, "Md Arshad", "Baig", "arshad@gmail.com", "arshad123"));
+		userList.add(new User(3, "Md Tahir", "Baig", "tahir@gmail.com", "tahir123"));
 	}
 
 	@Override
